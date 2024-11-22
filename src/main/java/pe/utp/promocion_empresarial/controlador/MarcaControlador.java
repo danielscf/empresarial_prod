@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,9 @@ public class MarcaControlador {
     MarcaServicio marcaServicio;
     @Autowired
     EmprendedorServicioImpl emprendedorServicioImpl;
+
+    @Value("${BRANDS_IMG_DIR_PATH}")
+    private String marcaFotoDirPath;
 
     @GetMapping
     public List<MarcaDto> findAllMarcas() {
@@ -89,8 +93,8 @@ public class MarcaControlador {
             marcaNueva.setEmprendedor(emprendedor);
 
             if (!foto.isEmpty()) {
-                // TODO: Create folder for fotos
-                String directorioFotos = "D:\\fotos_marca";
+                // DONE: Create folder for fotos
+                String directorioFotos = marcaFotoDirPath;
                 String nombreArchivo = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
                 Path rutaFoto = Paths.get(directorioFotos).resolve(nombreArchivo).toAbsolutePath();
 
@@ -118,8 +122,8 @@ public class MarcaControlador {
             }
 
             if (marca.getMarcaImagen() != null) {
-                // TODO: Create folder for fotos
-                Path rutaFoto = Paths.get("D:\\fotos_marca").resolve(marca.getMarcaImagen()).toAbsolutePath();
+                // DONE: Create folder for fotos
+                Path rutaFoto = Paths.get(marcaFotoDirPath).resolve(marca.getMarcaImagen()).toAbsolutePath();
                 Files.deleteIfExists(rutaFoto);
             }
 
@@ -141,8 +145,8 @@ public class MarcaControlador {
         }
 
         String nombreArchivo = marca.getMarcaImagen();
-        // TODO: Create folder for fotos
-        Path rutaFoto = Paths.get("D:\\fotos_marca").resolve(nombreArchivo).toAbsolutePath();
+        // DONE: Create folder for fotos
+        Path rutaFoto = Paths.get(marcaFotoDirPath).resolve(nombreArchivo).toAbsolutePath();
         Resource recurso = new UrlResource(rutaFoto.toUri());
 
         if (!recurso.exists() || !recurso.isReadable()) {
@@ -187,8 +191,8 @@ public class MarcaControlador {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El archivo es demasiado grande.");
                 }
 
-                // TODO: Create folder for fotos
-                String directorioFotos = "D:\\fotos_marca";
+                // DONE: Create folder for fotos
+                String directorioFotos = marcaFotoDirPath;
                 String nombreArchivo = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
                 Path rutaFoto = Paths.get(directorioFotos).resolve(nombreArchivo).toAbsolutePath();
                 Files.copy(foto.getInputStream(), rutaFoto, StandardCopyOption.REPLACE_EXISTING);

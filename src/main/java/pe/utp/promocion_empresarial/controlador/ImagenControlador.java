@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
@@ -33,8 +34,10 @@ public class ImagenControlador {
     @Autowired
     ProductoRepositorio productoRepositorio;
 
-    // TODO: Create folder for fotos
-    private static final String DIRECTORIO_IMAGENES = "D:\\imagenes";
+    // DONE: Create folder for fotos
+    @Value("${IMG_DIR_PATH}")
+    private String DIRECTORIO_IMAGENES;
+
     private static final long MAX_SIZE = 5 * 1024 * 1024; // 5 MB
 
     private boolean isValidImageType(String contentType) {

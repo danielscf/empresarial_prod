@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +48,9 @@ public class SolicitudControlador {
 
     @Autowired
     private EmprendedorServicio emprendedorServicio;
+
+    @Value("${PHOTOS_DIR_PATH}")
+    private String fotosDirPath;
 
     @GetMapping
     public List<SolicitudDto> findAllSolicitudes() {
@@ -101,8 +105,8 @@ public class SolicitudControlador {
                     .convertirADtoEmprendedor(solicitudNuevoEmprendedorDto.getEmprendedor(), usuarioGuardado);
 
             if (!foto.isEmpty()) {
-                // TODO: Create folder for fotos
-                String directorioFotos = "D:\\fotos";
+                // DONE: Create folder for fotos
+                String directorioFotos = fotosDirPath;
                 String nombreArchivo = emprendedorRuc + "_" + foto.getOriginalFilename();
                 Path rutaFoto = Paths.get(directorioFotos).resolve(nombreArchivo).toAbsolutePath();
                 Files.copy(foto.getInputStream(), rutaFoto, StandardCopyOption.REPLACE_EXISTING);

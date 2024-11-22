@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/emprendedor")
 public class EmprendedorControlador {
+
+    @Value("${PHOTOS_DIR_PATH}")
+    private String fotosDirPath;
 
     @Autowired
     EmprendedorServicio emprendedorServicio;
@@ -61,8 +65,8 @@ public class EmprendedorControlador {
                 .orElseThrow(() -> new RuntimeException("Emprendedor no encontrado"));
 
         String nombreArchivo = emprendedor.getEmprendedorFoto();
-        // TODO: Create folder for fotos
-        Path rutaFoto = Paths.get("D:\\fotos").resolve(nombreArchivo).toAbsolutePath();
+        // DONE: Create folder for fotos
+        Path rutaFoto = Paths.get(fotosDirPath).resolve(nombreArchivo).toAbsolutePath();
         Resource recurso = new UrlResource(rutaFoto.toUri());
 
         if (!recurso.exists() || !recurso.isReadable()) {
@@ -144,8 +148,8 @@ public class EmprendedorControlador {
             tipoActividad.setTipoActividadNombre(emprendedorDto.getTipoActividad().getTipoActividadNombre());
 
             if (foto != null && !foto.isEmpty()) {
-                // TODO: Create folder for fotos
-                String directorioFotos = "D:\\fotos";
+                // DONE: Create folder for fotos
+                String directorioFotos = fotosDirPath;
                 String nombreArchivo = emprendedorDto.getEmprendedorRuc() + "_" + foto.getOriginalFilename();
                 Path rutaFoto = Paths.get(directorioFotos).resolve(nombreArchivo).toAbsolutePath();
                 Files.copy(foto.getInputStream(), rutaFoto, StandardCopyOption.REPLACE_EXISTING);

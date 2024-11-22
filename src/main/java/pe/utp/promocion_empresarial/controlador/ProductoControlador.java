@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,8 +41,9 @@ public class ProductoControlador {
     @Autowired
     EmprendedorProductoRepositorio emprendedorProductoRepositorio;
 
-    // TODO: Create folder for fotos
-    private static final String DIRECTORIO_IMAGENES = "D:\\imagenes";
+    // DONE: Create folder for fotos
+    @Value("${IMG_DIR_PATH}")
+    private String DIRECTORIO_IMAGENES;
 
     @GetMapping
     public List<ProductoDto> findAllProductoes() {
