@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: empresarial_db
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=empresarial_db
+    volumes:
+      - ./db/empresarial_db.sql:/docker-entrypoint-initdb.d/init.sql
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: promotions_frontend
+    image: promotions_frontend:dev
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
