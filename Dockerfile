@@ -15,9 +15,9 @@ FROM amazoncorretto:17-alpine
 
 WORKDIR /app
 
-RUN mkdir -p /app/images/
-RUN mkdir -p /app/photos/
-RUN mkdir -p /app/brand_images/
+RUN mkdir -p /app/images/ && chmod -R 777 /app/images
+RUN mkdir -p /app/photos/ && chmod -R 777 /app/photos
+RUN mkdir -p /app/brand_images/ && chmod -R 777 /app/brand_images
 
 COPY --from=builder /app/build/libs/*.war app.war
 
