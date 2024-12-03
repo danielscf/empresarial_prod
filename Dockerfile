@@ -15,6 +15,10 @@ FROM amazoncorretto:17-alpine
 
 WORKDIR /app
 
+RUN mkdir -p /app/images/
+RUN mkdir -p /app/photos/
+RUN mkdir -p /app/brand_images/
+
 COPY --from=builder /app/build/libs/*.war app.war
 
 EXPOSE 8080
