@@ -42,10 +42,9 @@ public class SecurityConfig implements WebMvcConfigurer {
         configuration.setAllowedOrigins(Arrays.asList("http://129.151.39.237"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true);
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+        configuration.setAllowCredentials(true);
 
         return source;
     }
@@ -55,9 +54,9 @@ public class SecurityConfig implements WebMvcConfigurer {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> request
-                        // .requestMatchers("/login", "/solicitud/emprendedor/usuario").permitAll()
+                        //.requestMatchers("/login", "/solicitud/emprendedor/usuario").permitAll()
                         .anyRequest().permitAll())
-                .httpBasic(AbstractHttpConfigurer::disable) // Desactiva la autenticación básica
+                .httpBasic(AbstractHttpConfigurer::disable)  // Desactiva la autenticación básica
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
